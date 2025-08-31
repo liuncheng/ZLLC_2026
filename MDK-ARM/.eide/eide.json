@@ -172,6 +172,9 @@
           },
           {
             "path": "../User/Algorithm/Src/user_lib.cpp"
+          },
+          {
+            "path": "../User/Algorithm/Src/alg_SMC_Control.cpp"
           }
         ],
         "folders": []

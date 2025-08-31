@@ -128,6 +128,18 @@ void Class_Gimbal::TIM_Calculate_PeriodElapsedCallback()
 
     //PID输出
     Motor_Yaw.TIM_PID_PeriodElapsedCallback();
+
+    //滑模控制
+    // static uint8_t mod10 = 0;
+    // if(mod10 == 2){
+    //     //注意电机正转角度应该增大，IMU坐标系应该和该坐标系一致，不然会负反馈
+    //     Motor_Yaw.Set_Transform_Angle(-Boardc_BMI.Get_Angle_Yaw());
+    //     Motor_Yaw.Set_Transform_Omega(-Boardc_BMI.Get_Gyro_Yaw() * 57.3f);          //陀螺仪这里的角度得是度每秒
+    //     Motor_Yaw.TIM_SMC_PeriodElapsedCallback();
+    //     mod10 = 0;
+    // }
+    // mod10 ++;
+
     Motor_Pitch.TIM_PID_PeriodElapsedCallback();
 }
 

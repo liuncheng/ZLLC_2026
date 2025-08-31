@@ -127,8 +127,7 @@ void Class_Tricycle_Chassis::Speed_Resolution(){
             break;
         }
         case(Chassis_Control_Type_FLLOW):
-        case(Chassis_Control_Type_SPIN_Positive):
-        case(Chassis_Control_Type_SPIN_NePositive):
+        case(Chassis_Control_Type_SPIN):
         {
             //轮组自锁，每个小轮坐标系都符合右手系
             static uint32_t Lock_Time = 0;
