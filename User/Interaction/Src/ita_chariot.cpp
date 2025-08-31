@@ -673,7 +673,9 @@ void Class_Chariot::TIM1msMod50_Alive_PeriodElapsedCallback()
                 TIM1msMod50_Gimbal_Communicate_Alive_PeriodElapsedCallback();
                 mod50_mod3 = 0;
             }
-            if(Get_Gimbal_Status() == Gimbal_Status_DISABLE){
+            if(Get_Gimbal_Status() == Gimbal_Status_DISABLE || 
+            Motor_Yaw.Get_DJI_Motor_Status() == DJI_Motor_Status_DISABLE){
+                Chassis.Set_Chassis_Control_Type(Chassis_Control_Type_DISABLE);
                 Chassis.Set_Target_Velocity_X(0);
                 Chassis.Set_Target_Velocity_Y(0);
                 Chassis.Set_Target_Omega(0);

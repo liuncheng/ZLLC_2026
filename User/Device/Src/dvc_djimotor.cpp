@@ -799,4 +799,94 @@ void Class_DJI_Motor_C620::TIM_PID_PeriodElapsedCallback()
     Output();
 }
 
+
+
+/**
+ * @brief TIM定时器中断计算回调函数
+ *
+ */
+void Class_DJI_Motor_C620_Steer::TIM_PID_PeriodElapsedCallback()
+{
+    switch (DJI_Motor_Control_Method)
+    {
+    case (DJI_Motor_Control_Method_OPENLOOP):
+    {
+        //默认开环扭矩控制
+        Out = Target_Torque / Torque_Max * Output_Max;
+    }
+    break;
+    case (DJI_Motor_Control_Method_TORQUE):
+    {
+        //默认闭环扭矩控制
+        Out = Target_Torque / Torque_Max * Output_Max;
+    }
+    break;
+    case (DJI_Motor_Control_Method_OMEGA):
+    {
+        PID_Omega.Set_Target(Target_Omega_Radian);
+        PID_Omega.Set_Now(Data.Now_Omega_Radian);
+        PID_Omega.TIM_Adjust_PeriodElapsedCallback();
+
+        Out = PID_Omega.Get_Out();
+    }
+    break;
+    case (DJI_Motor_Control_Method_ANGLE):
+    {
+        PID_Angle.Set_Target(Target_Radian);
+        PID_Angle.Set_Now(Data.Now_Radian);
+        PID_Angle.TIM_Adjust_PeriodElapsedCallback();
+
+        Target_Omega_Radian = PID_Angle.Get_Out();
+
+        PID_Omega.Set_Target(Target_Omega_Radian);
+        PID_Omega.Set_Now(Data.Now_Omega_Radian);
+        PID_Omega.TIM_Adjust_PeriodElapsedCallback();
+
+        Out = PID_Omega.Get_Out();
+    }
+    break;
+    case (DJI_Motor_Control_Method_AGV_MODE):
+    {               //注意，直接用大疆电机的数据和用磁编的数据角度范围什么的是不一样的
+        PID_Angle.Set_Target(Target_Radian);
+        PID_Angle.Set_Now(Transform_Radian);
+        PID_Angle.TIM_Adjust_PeriodElapsedCallback();
+
+        Target_Omega_Radian = PID_Angle.Get_Out();
+
+        //大疆电机速度作为反馈，避免直接差分，速度算不准
+        PID_Omega.Set_Target(Target_Omega_Radian);
+        PID_Omega.Set_Now(Data.Now_Omega_Radian);
+        PID_Omega.TIM_Adjust_PeriodElapsedCallback();
+
+        Out = PID_Omega.Get_Out();
+    }
+	break;
+    default:
+    {
+        Out = 0.0f;
+    }
+    break;
+    }
+    //Out = 0.0f;//test
+    Output();
+}
+
+void Class_DJI_Motor_C620_Steer::MA600_Data_Process(Struct_CAN_Rx_Buffer *CAN_RxMessage)
+{
+     if(CAN_RxMessage->Data[0] != 0xA5 || CAN_RxMessage->Data[7] != 0xB5){
+        return;
+    }
+    int16_t temp_Single_Radian = CAN_RxMessage->Data[2] << 8 | CAN_RxMessage->Data[1];
+    int16_t temp_Multi_Radian  = CAN_RxMessage->Data[4] << 8 | CAN_RxMessage->Data[3];
+    int16_t temp_Omega         = CAN_RxMessage->Data[6] << 8 | CAN_RxMessage->Data[5];
+
+    MA600_Data.Single_Radian = -temp_Single_Radian / 100.0f;                //注意磁编数据和3508数据正负应该一致
+    MA600_Data.Multi_Radian  = -temp_Multi_Radian  / 100.0f;
+    MA600_Data.Omega         = -temp_Omega         / 100.0f;
+
+    float delta_rad = MA600_Data.Single_Radian - Zero_Position;
+    Zero_Offset_Radian = Normalize_Angle_Radian_PI_to_PI(delta_rad); 
+}
+
+
 /************************ COPYRIGHT(C) USTC-ROBOWALKER **************************/

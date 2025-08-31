@@ -399,7 +399,7 @@ public:
 
     void CAN_RxCpltCallback(uint8_t *Rx_Data);
     void TIM_Alive_PeriodElapsedCallback();
-    void TIM_PID_PeriodElapsedCallback();
+    virtual void TIM_PID_PeriodElapsedCallback();
 
     float v;
     float init_v = 0.0f;
@@ -466,6 +466,36 @@ protected:
 
     void Data_Process();
     void Output();
+};
+
+class Class_DJI_Motor_C620_Steer : public Class_DJI_Motor_C620{
+
+public:
+    inline float Get_Now_Zero_Offset_Radian();
+    inline float Get_Zero_Position();
+
+    inline void Set_Zero_Position(float __Zero_Position);
+    inline void Set_Transform_Radian(float __Transform_Radian);
+    inline void Set_Transform_Radian_Omega(float __Transform_Radian_Omega);
+
+    void MA600_Data_Process(Struct_CAN_Rx_Buffer *CAN_RxMessage);
+
+    void TIM_PID_PeriodElapsedCallback();
+
+protected :
+    struct {
+        float Single_Radian;
+        float Multi_Radian;
+        float Omega;
+    } MA600_Data;
+
+    float Transform_Radian = 0.0f;
+    float Transform_Radian_Omega = 0.0f;
+
+    //软件上的编码器零点    0 --- 2PI
+    float Zero_Position = 0.0f;
+    //相对软件0点的偏移 rad   0 --- 2PI
+    float Zero_Offset_Radian = 0.0f;
 };
 
 /* Exported variables --------------------------------------------------------*/
@@ -1195,6 +1225,27 @@ void Class_DJI_Motor_C620::Set_Out(float __Out)
 {
     Out = __Out;
     Output();
+}
+
+inline float Class_DJI_Motor_C620_Steer::Get_Now_Zero_Offset_Radian(){
+    return Zero_Offset_Radian;
+}
+
+inline float Class_DJI_Motor_C620_Steer::Get_Zero_Position(){
+    return Zero_Position;
+}
+
+inline void Class_DJI_Motor_C620_Steer::Set_Zero_Position(float __Zero_Position){
+    Zero_Position = Normalize_Angle_Radian_PI_to_PI(__Zero_Position);
+}
+
+inline void Class_DJI_Motor_C620_Steer::Set_Transform_Radian(float __Transform_Radian)
+{
+    Transform_Radian = __Transform_Radian;
+}
+
+inline void Class_DJI_Motor_C620_Steer::Set_Transform_Radian_Omega(float __Transform_Radian_Omega){
+    Transform_Radian_Omega = __Transform_Radian_Omega;
 }
 
 #endif
