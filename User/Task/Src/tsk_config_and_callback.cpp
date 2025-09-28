@@ -520,7 +520,7 @@ extern "C" void Task_Init()
         //遥控器接收
         #ifdef USE_DR16
         UART_Init(&huart5, DR16_UART5_Callback, 18);
-		UART_Init(&huart6, Image_UART6_Callback, 40);
+		    //UART_Init(&huart6, Image_UART6_Callback, 40);
         #elif defined(USE_VT13)
         UART_Init(&huart9, VT13_UART_Callback, 30);
         #endif
