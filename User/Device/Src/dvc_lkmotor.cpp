@@ -178,6 +178,7 @@ void Class_LK_Motor::Data_Process()
     Struct_LK_Motor_CAN_Rx_Data *tmp_buffer = (Struct_LK_Motor_CAN_Rx_Data *)CAN_Manage_Object->Rx_Buffer.Data;
     
     //处理大小端
+<<<<<<< HEAD
     //Math_Endian_Reverse_16((void *)&tmp_buffer->Encoder_Reverse, &tmp_encoder);
     //Math_Endian_Reverse_16((void *)&tmp_buffer->Omega_Reverse, &tmp_omega);
     //Math_Endian_Reverse_16((void *)&tmp_buffer->Current_Reverse, &tmp_current);
@@ -185,6 +186,11 @@ void Class_LK_Motor::Data_Process()
     tmp_encoder = tmp_buffer->Encoder_Reverse;
     tmp_omega = tmp_buffer->Omega_Reverse;
 
+=======
+    Math_Endian_Reverse_16((void *)&tmp_buffer->Encoder_Reverse, &tmp_encoder);
+    Math_Endian_Reverse_16((void *)&tmp_buffer->Omega_Reverse, &tmp_omega);
+    Math_Endian_Reverse_16((void *)&tmp_buffer->Current_Reverse, &tmp_current);
+>>>>>>> 899aabc7a2166e0f6e06b749a53783bc32b028e3
 
     //计算圈数与总角度值
     if(Start_Flag==0)
@@ -206,10 +212,16 @@ void Class_LK_Motor::Data_Process()
     //计算电机本身信息
     Data.CMD_ID = tmp_buffer->CMD_ID;
     Data.Now_Angle = (float)Data.Total_Encoder / (float)Position_Max *360.0f; 
+<<<<<<< HEAD
     //Data.Now_Angle = (float)tmp_encoder / (float)Position_Max * 360.0f;
     Data.Now_Radian = Data.Now_Angle * DEG_TO_RAD;
     Data.Now_Omega_Angle = tmp_omega * 0.01;
     Data.Now_Omega_Radian = tmp_omega * DEG_TO_RAD; 
+=======
+    Data.Now_Radian = Data.Now_Angle * DEG_TO_RAD;
+    Data.Now_Omega_Angle = tmp_omega * RPM_TO_DEG;
+    Data.Now_Omega_Radian = tmp_omega *RPM_TO_RADPS; 
+>>>>>>> 899aabc7a2166e0f6e06b749a53783bc32b028e3
     Data.Now_Current = Math_Int_To_Float(tmp_current, 0, (1 << 12) - 1, -Current_Max, Current_Max); 
     Data.Now_Temperature = tmp_buffer->Temperature_Centigrade;  
 

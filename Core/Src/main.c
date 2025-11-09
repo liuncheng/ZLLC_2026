@@ -1,7 +1,7 @@
 /* USER CODE BEGIN Header */
 /**
   ******************************************************************************
-  * @file           : main.c
+ * @file      :main.c
   * @brief          : Main program body
   ******************************************************************************
   * @attention
@@ -21,6 +21,7 @@
 #include "dma.h"
 #include "fdcan.h"
 #include "iwdg.h"
+#include "memorymap.h"
 #include "spi.h"
 #include "tim.h"
 #include "usart.h"

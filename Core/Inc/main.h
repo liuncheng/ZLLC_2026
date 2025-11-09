@@ -1,7 +1,7 @@
 /* USER CODE BEGIN Header */
 /**
   ******************************************************************************
-  * @file           : main.h
+ * @file      :main.h
   * @brief          : Header for main.c file.
   *                   This file contains the common defines of the application.
   ******************************************************************************
@@ -57,8 +57,6 @@ void Error_Handler(void);
 /* USER CODE END EFP */
 
 /* Private defines -----------------------------------------------------------*/
-#define POWER_OUT1_Pin GPIO_PIN_14
-#define POWER_OUT1_GPIO_Port GPIOC
 #define VCC_5V_Pin GPIO_PIN_15
 #define VCC_5V_GPIO_Port GPIOC
 #define CS1_ACCEL_Pin GPIO_PIN_0

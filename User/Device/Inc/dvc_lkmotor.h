@@ -118,8 +118,8 @@ struct Struct_LK_Motor_Rx_Data
     Enum_LK_Motor_Control_ID CMD_ID; //控制命令
 	float Now_Angle;  				//当前角度，以°为单位
     float Now_Radian;  				//当前角度，以rad为单位		
-	float Now_Omega_Angle;  		//当前角速度，以dps为单位
-	float Now_Omega_Radian;  	    //当前角速度，从dps转为rad/s	
+	float Now_Omega_Angle;  		//当前角速度，从rpm转为°/s
+	float Now_Omega_Radian;  	    //当前角速度，从rpm转为rad/s	
     float Now_Current;  			//当前电流， 对MS系列是输出功率·
     float Now_Temperature; 			//当前温度
     uint16_t Pre_Encoder; 

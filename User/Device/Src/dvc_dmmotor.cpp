@@ -240,7 +240,6 @@ void Class_DM_Motor_J4310::TIM_Alive_PeriodElapsedCallback()
     {
         //电机保持连接
         DM_Motor_Status = DM_Motor_Status_ENABLE;
-        //DM_Motor_Control_Status = DM_Motor_Control_Status_ENABLE;
     }
 
     //控制电机使能或失能

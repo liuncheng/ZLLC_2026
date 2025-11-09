@@ -462,8 +462,11 @@ public:
     inline void Set_Armor_Attacked_Ammo_Status(Enum_MiniPC_Data_Status __Armor_Attacked_Ammo_Status);
     inline void Set_Self_Color(Enum_MiniPC_Self_Color __Self_Color);
     inline void Set_Outpost_Status(Enum_MiniPC_Data_Status __Outpost_Status);
+<<<<<<< HEAD
     inline void Set_UWB_Pos_X(float __UWB_Pos_X);
     inline void Set_UWB_Pos_Y(float __UWB_Pos_Y);
+=======
+>>>>>>> 899aabc7a2166e0f6e06b749a53783bc32b028e3
 
     void Append_CRC16_Check_Sum(uint8_t * pchMessage, uint32_t dwLength);
     bool Verify_CRC16_Check_Sum(const uint8_t * pchMessage, uint32_t dwLength);
@@ -533,6 +536,10 @@ protected:
 
     const float g = 9.8; // 重力加速度
     float bullet_v = 28.0; // 子弹速度
+<<<<<<< HEAD
+=======
+	const float a_d = 0.0595f; // 改为pitch旋转中心到摩擦轮的距离
+>>>>>>> 899aabc7a2166e0f6e06b749a53783bc32b028e3
 
     // 距离
     float Distance;
@@ -540,8 +547,12 @@ protected:
 
 
     //写变量
+<<<<<<< HEAD
     float UWB_Pos_X = 0.0f;
     float UWB_Pos_Y = 0.0f;
+=======
+
+>>>>>>> 899aabc7a2166e0f6e06b749a53783bc32b028e3
     //迷你主机对外接口信息
     Struct_MiniPC_Tx_Data Data_MCU_To_NUC;
     MiniPC_Tx_A_t  Tx_A;
@@ -694,6 +705,7 @@ void Class_MiniPC::Set_Gimbal_Now_Yaw_Angle(float __Gimbal_Now_Yaw_Angle)
 {
     Now_Angle_Yaw = __Gimbal_Now_Yaw_Angle;
 }
+<<<<<<< HEAD
 /**
  * @brief 设定迷你主机位置X
  * 
@@ -712,6 +724,9 @@ void Class_MiniPC::Set_UWB_Pos_Y(float __UWB_Pos_Y)
 {
     UWB_Pos_Y = __UWB_Pos_Y;
 }
+=======
+
+>>>>>>> 899aabc7a2166e0f6e06b749a53783bc32b028e3
 
 #endif
 
