@@ -403,6 +403,7 @@ float Class_MiniPC::calc_distance(float x, float y, float z)
 //extern Referee_Rx_E_t CAN3_Chassis_Rx_Data_E;
 float Class_MiniPC::calc_pitch(float x, float y, float z) 
 {
+#ifdef OLD
   // 根据 x、y 分量计算的平面投影的模长和 z 分量计算的反正切值，得到弧度制的俯仰角
   float pitch = atan2f(z, sqrtf(x * x + y * y));
   //使用重力加速度模型迭代更新俯仰角
@@ -426,6 +427,34 @@ float Class_MiniPC::calc_pitch(float x, float y, float z)
   pitch = -(pitch * 180 / PI); // 向上为负，向下为正
 
   return pitch;
+#endif
+// std::由于进行了函数重载，可以根据传入数据的类型选择合适的返回值类型
+    // std::hypot就是根下平方和相加，只不过多了防精度溢出机制，无法使用请替换
+    // c++11有了std::hypot(x, y)，c++17才有std::hypot(x, y, z)
+    float d = calc_distance(x, y, z);
+    if (d < a_d)
+    {
+        // return 当前pitch，因为无解1
+		return IMU->Get_Angle_Pitch();
+		
+    }
+
+    float v0 =
+        Referee->Get_Referee_Status() == Referee_Status_ENABLE &&
+                Referee->Get_Shoot_Speed()
+            ? Referee->Get_Shoot_Speed()
+            : bullet_v;
+    
+    // 初始估值一定偏小一点点
+    float t = (d - a_d) / v0;
+    const float t1 = 2.0f * a_d * v0, t2 = v0 * v0 - z * g;
+    
+    // 牛顿迭代法，可省略，最好两次
+    t -= (d * d - a_d * a_d + t * (-t1 + t * (-t2 + 0.25f * g * g * t * t))) / (-t1 + t * (-2.0f * t2 + g * g * t * t));
+    t -= (d * d - a_d * a_d + t * (-t1 + t * (-t2 + 0.25f * g * g * t * t))) / (-t1 + t * (-2.0f * t2 + g * g * t * t));
+    
+    // pitch向下为正，加负号
+    return 180.0f * atanf((z + 0.5 * g * t * t) / sqrtf(x * x + y * y)) / PI;
 }
 
 /**
