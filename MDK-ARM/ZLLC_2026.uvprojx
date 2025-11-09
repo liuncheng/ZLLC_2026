@@ -624,6 +624,11 @@
               <FileType>8</FileType>
               <FilePath>..\User\Algorithm\Src\alg_SMC_Control.cpp</FilePath>
             </File>
+            <File>
+              <FileName>alg_new_power_limit.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>..\User\Algorithm\Src\alg_new_power_limit.cpp</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
